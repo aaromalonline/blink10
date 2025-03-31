@@ -1,87 +1,106 @@
-# Blink10
+# Blink10 - Temporary Email & SMS Session Tracker
 
-**Blink10** is a command-line tool for creating **self-destructing temporary emails and phone numbers** that expire after **10 minutes**. It ensures user privacy by **deleting received messages after fetching** and applying encryption before deletion.
+## Summary
 
----
+python script.py --email → Generate a new email.
+python script.py --sms → Generate a new SMS number.
+python script.py --list → View all past sessions.
+python script.py --use <ID> → Switch back to a previous session.
+
+
+## Overview
+
+Blink10 is a simple terminal-based utility to generate and track temporary email addresses and SMS numbers. It allows users to:
+
+- Generate disposable emails and SMS numbers
+- Track previous sessions in an SQLite database
+- Switch back to any previous session
+
 ## Features
-- **Temporary Emails** 📧: Generate a disposable email address valid for **10 minutes**.
-- **Temporary Phone Numbers** 📱: Get a self-destructing phone number (if supported by provider).
-- **Auto-Fetch Messages** ⏳: Continuously fetch received emails or SMS until expiry.
-- **End-to-End Encryption** 🔐: Encrypts messages before deletion for added privacy.
-- **Fully Automated Expiry** 💥: Automatically deletes emails, SMS, and generated IDs after **10 minutes**.
 
----
+- **Generate Temporary Emails**: Fetches disposable email domains and generates a random email.
+- **Generate Temporary SMS Numbers**: Simulates SMS numbers for temporary use.
+- **Session Tracking**: Saves sessions in an SQLite database to allow switching between them.
+- **Session Management**: List and reuse previous sessions.
+
 ## Installation
-```sh
-# Clone the repository
-git clone https://github.com/yourusername/blink10.git
-cd blink10
 
-# Install dependencies
+### Requirements
+
+Ensure you have Python installed, then install the required dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
----
+### Dependencies (requirements.txt)
+
+```
+sqlite3
+requests
+argparse
+```
+
 ## Usage
 
-### 1️⃣ Generate a Temporary Email
-```sh
+### Generate a new email session
+
+```bash
 python blink10.py --email
 ```
-- Displays the **generated email address**.
-- Fetches received emails every few seconds.
-- Deletes messages **after they are fetched**.
-- Auto-expires in **10 minutes**.
 
-### 2️⃣ Generate a Temporary Phone Number
-```sh
+**Example Output:**
+
+```
+📧 New Email: user4821@tempmail.com
+👉 Check manually: https://www.mailinator.com/v4/public/inboxes.jsp?to=user4821
+```
+
+### Generate a new SMS session
+
+```bash
 python blink10.py --sms
 ```
-- Displays the **generated temporary phone number**.
-- Fetches incoming SMS until expiry.
-- Auto-deletes messages and number after **10 minutes**.
 
-### 3️⃣ Encrypt Received Messages Before Deletion
-```sh
-python blink10.py --email --encrypt
+**Example Output:**
+
 ```
-- Uses encryption to **scramble messages** before deletion.
-- Only decryptable using a **local private key**.
-
-### 4️⃣ Custom Timer for Expiry
-```sh
-python blink10.py --email --time 5
-```
-- Changes the expiration time to **5 minutes** (default is 10 min).
-
----
-## Security & Privacy
-**How Blink10 Protects Your Privacy:**
-- **Messages auto-delete after fetching.**
-- **Temporary IDs (email/number) are completely removed** after expiry.
-- **Encryption ensures the server never stores readable messages.**
-
----
-## Example Output
-```sh
-$ python blink10.py --email
-[+] Temporary Email: xyz123@blinkmail.com
-[+] Fetching emails...
-[+] New Email Received: "Verification Code: 875421"
-[+] Email deleted after fetching.
-[+] Self-destructing in: 9m 30s...
+📱 New SMS Number: +1923847563
+👉 Check manually: https://sms24.me/en/numbers/1923847563
 ```
 
-```sh
-$ python blink10.py --sms
-[+] Temporary Phone Number: +1234567890
-[+] Fetching SMS...
-[+] New SMS Received: "Your OTP is 567890"
-[+] SMS deleted after fetching.
-[+] Self-destructing in: 8m 45s...
+### List all previous sessions
+
+```bash
+python blink10.py --list
 ```
 
----
-## License
-Blink10 is an **open-source** project. Feel free to contribute and improve privacy-focused communication! 🚀
+**Example Output:**
 
+```
+📜 Previous Sessions:
+1. Email: user4821@tempmail.com (Created: 2025-03-31 12:45:10)
+2. SMS: +1923847563 (Created: 2025-03-31 12:46:05)
+```
+
+### Switch back to a previous session
+
+```bash
+python blink10.py --use <session_id>
+```
+
+**Example Output:**
+
+```bash
+python blink10.py --use 1
+🔄 Switched to email session: user4821@tempmail.com
+👉 Check manually: https://www.mailinator.com/v4/public/inboxes.jsp?to=user4821
+```
+
+## Notes
+
+- Email and SMS services are not directly integrated. Users must check the respective links manually.
+- Data is stored locally in an SQLite database (`sessions.db`).
+- No sensitive data is stored, ensuring privacy.
+
+##
